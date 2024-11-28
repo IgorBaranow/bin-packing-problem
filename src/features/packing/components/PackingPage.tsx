@@ -1,79 +1,169 @@
 import React, { useState } from "react";
-import { Item, solveKnapsack } from "../utils/knapsackSolver";
+import ItemList from "./ItemList";
+import { items } from "src/data/items";
+import { Box, Button, Grid2, Typography } from "@mui/material";
+import SolutionList from "./SolutionList";
+import { solveKnapsack } from "../utils/solveKnapsack";
 
-const PackingPage: React.FC = () => {
-  const [capacity] = useState<number>(25); // Fixed capacity
-  const [items] = useState<Item[]>([
-    { value: 4, weight: 2, name: "Mascara" },
-    { value: 3, weight: 1, name: "Powder" },
-    { value: 7, weight: 3, name: "Eye-shadow" },
-    { value: 11, weight: 8, name: "Lipstick" },
-    { value: 15, weight: 7, name: "Concealer" },
-    { value: 9, weight: 5, name: "Blush" },
-    { value: 13, weight: 6, name: "Foundation" },
-    { value: 8, weight: 4, name: "Eyebrow gel" },
-  ]);
-
-  const [selectedItemsCount, setSelectedItemsCount] = useState<number[]>(
-    new Array(items.length).fill(0) // Initialize counts for all items to 0
+export default function PackingPage() {
+  const [capacity] = useState<number>(25);
+  const [itemCounts, setItemCounts] = useState<{ [key: string]: number }>(
+    items.reduce((acc, item) => ({ ...acc, [item.name]: 0 }), {})
   );
 
   const [result, setResult] = useState<{
     maxValue: number;
-    selectedItems: Item[];
+    selectedItems: { [key: string]: number };
   } | null>(null);
 
-  const handleAddItem = (index: number) => {
-    const updatedCounts = [...selectedItemsCount];
-    updatedCounts[index]++;
-    setSelectedItemsCount(updatedCounts);
+  const handleAddItem = (itemName: string) => {
+    setItemCounts((prevCounts) => ({
+      ...prevCounts,
+      [itemName]: prevCounts[itemName] + 1,
+    }));
   };
 
-  const handleRemoveItem = (index: number) => {
-    const updatedCounts = [...selectedItemsCount];
-    if (updatedCounts[index] > 0) updatedCounts[index]--;
-    setSelectedItemsCount(updatedCounts);
+  const handleRemoveItem = (itemName: string) => {
+    setItemCounts((prevCounts) => ({
+      ...prevCounts,
+      [itemName]: Math.max(prevCounts[itemName] - 1, 0),
+    }));
   };
 
   const handleSolve = () => {
+    const selectedItemsCount = items.map((item) => itemCounts[item.name]);
     const solution = solveKnapsack(items, capacity, selectedItemsCount);
-    setResult(solution);
+
+    // Transform selectedItems into a map of item name to count
+    const selectedItemsMap = solution.selectedItems.reduce(
+      (acc, item) => ({
+        ...acc,
+        [item.name]: (acc[item.name] || 0) + 1,
+      }),
+      {}
+    );
+
+    setResult({
+      maxValue: solution.maxValue,
+      selectedItems: selectedItemsMap,
+    });
+  };
+
+  const handleReset = () => {
+    // Reset the state variables
+    setItemCounts(
+      items.reduce((acc, item) => ({ ...acc, [item.name]: 0 }), {})
+    );
+    setResult(null);
   };
 
   return (
-    <div>
-      <h1>Knapsack Problem Solver</h1>
-      <h2>Fixed Capacity: {capacity}</h2>
-      <div>
-        <h2>Items</h2>
-        <ul>
-          {items.map((item, index) => (
-            <li key={index}>
-              {item.name}: Value = {item.value}, Weight = {item.weight}
-              <button onClick={() => handleAddItem(index)}>+</button>
-              <button onClick={() => handleRemoveItem(index)}>-</button>
-              <span> Selected: {selectedItemsCount[index]}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <button onClick={handleSolve}>Solve</button>
-      {result && (
-        <div>
-          <h2>Solution</h2>
-          <p>Maximum Value: {result.maxValue}</p>
-          <h3>Selected Items:</h3>
-          <ul>
-            {result.selectedItems.map((item, index) => (
-              <li key={index}>
-                {item.name}: Value = {item.value}, Weight = {item.weight}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </div>
+    <>
+      <Grid2 container spacing={2}>
+        <Grid2
+          size={4}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            textAlign: "center",
+          }}
+        >
+          <ItemList
+            items={items}
+            itemCounts={itemCounts}
+            onAddItem={handleAddItem}
+            onRemoveItem={handleRemoveItem}
+          />
+        </Grid2>
+        <Grid2
+          size={4}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            textAlign: "center",
+          }}
+        >
+          <Typography component="h1" variant="h1">
+            Pack your Cosmetic Bag
+          </Typography>
+          <Box
+            component="img"
+            src="/cosmetic-bag.png"
+            alt="Descriptive text for your image"
+            sx={{
+              width: "400px",
+              height: "auto",
+              marginTop: "5rem",
+            }}
+          />
+          <Typography variant="body1" color="text.secondary">
+            Capacity: {capacity}
+          </Typography>
+          <Button
+            onClick={handleSolve}
+            variant="contained"
+            color="primary"
+            sx={{
+              marginTop: 10,
+              width: "250px",
+              height: "60px",
+              fontSize: "1rem",
+            }}
+          >
+            Pack
+          </Button>
+          {result && (
+            <Button
+              onClick={handleReset}
+              variant="outlined"
+              color="secondary"
+              sx={{
+                marginTop: 2,
+                fontSize: "0.8rem",
+              }}
+            >
+              Try Again
+            </Button>
+          )}
+        </Grid2>
+        <Grid2
+          size={4}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            textAlign: "center",
+          }}
+        >
+          <Box
+            sx={{
+              margin: "2rem 0",
+            }}
+          >
+            <Typography variant="h4">Packed Items</Typography>
+          </Box>
+          {result ? (
+            <SolutionList selectedItems={result.selectedItems} />
+          ) : (
+            <Typography variant="body2" color="text.secondary">
+              No items packed yet.
+            </Typography>
+          )}
+          <Box>
+            {result && (
+              <div>
+                <Typography variant="h4" color="primary">
+                  Maximum Value: {result.maxValue}
+                </Typography>
+              </div>
+            )}
+          </Box>
+        </Grid2>
+      </Grid2>
+    </>
   );
-};
-
-export default PackingPage;
+}
