@@ -8,21 +8,28 @@ import { solveKnapsack } from "../utils/solveKnapsack";
 export default function PackingPage() {
   const [capacity] = useState<number>(25);
   const [itemCounts, setItemCounts] = useState<{ [key: string]: number }>(
+    // из массива с объектами делает объект, где acc, аккамулятор, в который копит себя все последующие item, тем самым получается один массив со всеми айтемс
+    // в теле функции создаю новый объект, копирую свойство из acc и добавляю новое свойство со значением 0.
+    // получается создаю обект {sasha: 0, igor: 0, ...}, этот 0 нужен для управления состоянием каждого айтема, 0 начальный отсчет и дальше мы его меняем для каждого айтема
     items.reduce((acc, item) => ({ ...acc, [item.name]: 0 }), {})
   );
 
+  // состояние результат может быть объектом состоящим из 2 свойств или нулл, чтобы показать, что данных пока нет
   const [result, setResult] = useState<{
     maxValue: number;
     selectedItems: { [key: string]: number };
   } | null>(null);
 
+  // функция на кнопку плюсик, нажимая на плюсик вызываю функцию setItemCounts, которая меняет состояние itemCounts на 1
   const handleAddItem = (itemName: string) => {
     setItemCounts((prevCounts) => ({
+      // создаю копию текущего состояния (соблюдая принцип иммутабельности) и обновляю значение для ключа itemName
       ...prevCounts,
       [itemName]: prevCounts[itemName] + 1,
     }));
   };
 
+  // функция на уменьшение, тоже самое, но если меньше 0, устанавливаю 0
   const handleRemoveItem = (itemName: string) => {
     setItemCounts((prevCounts) => ({
       ...prevCounts,
@@ -30,11 +37,15 @@ export default function PackingPage() {
     }));
   };
 
+  //функция на кнопку спаковать. меняет массив айтемс в массив содержащий количество выбранных элементов для каждого айтема, например после нажатий плюсов получилось
+  // [{igor: 2}, {sasha: 1}], selectedItemsCount вернет [2, 1]
   const handleSolve = () => {
     const selectedItemsCount = items.map((item) => itemCounts[item.name]);
+    //передает в функцию 3 параметра, функция решает и возвращает maxValue и selectedItems
     const solution = solveKnapsack(items, capacity, selectedItemsCount);
 
-    // Transform selectedItems into a map of item name to count
+    // преобразует селектед айтемс в селектед айтемс мап, где ключи это имена, а значение колличество раз, которое каждый элемент встречается в массиве
+
     const selectedItemsMap = solution.selectedItems.reduce(
       (acc, item) => ({
         ...acc,
@@ -43,6 +54,7 @@ export default function PackingPage() {
       {}
     );
 
+    // функция меняет состояние результата на результат переданный с решения
     setResult({
       maxValue: solution.maxValue,
       selectedItems: selectedItemsMap,
@@ -50,7 +62,6 @@ export default function PackingPage() {
   };
 
   const handleReset = () => {
-    // Reset the state variables
     setItemCounts(
       items.reduce((acc, item) => ({ ...acc, [item.name]: 0 }), {})
     );
