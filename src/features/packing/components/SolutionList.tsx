@@ -5,6 +5,7 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
 import Avatar from "@mui/material/Avatar";
 import Badge from "@mui/material/Badge";
+import { useTranslation } from "react-i18next";
 
 interface SolutionListProps {
   selectedItems: { [key: string]: number };
@@ -21,6 +22,8 @@ export default function SolutionList({ selectedItems }: SolutionListProps) {
     Foundation: "/foundation.png",
     "Eyebrow gel": "/eyebrow-gel.png",
   };
+
+  const { t } = useTranslation();
 
   return (
     <List sx={{ width: "100%", maxWidth: 450 }}>
@@ -50,7 +53,7 @@ export default function SolutionList({ selectedItems }: SolutionListProps) {
               }}
             />
           </ListItemAvatar>
-          <ListItemText primary={name} />
+          <ListItemText primary={t(`items.${name}`)} />
           <Badge
             badgeContent={count}
             color="secondary"

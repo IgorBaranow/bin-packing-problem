@@ -9,6 +9,7 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import { useTranslation } from "react-i18next";
 
 interface Item {
   name: string;
@@ -39,6 +40,8 @@ export default function ItemList({
     Foundation: "/foundation.png",
     "Eyebrow gel": "/eyebrow-gel.png",
   };
+
+  const { t } = useTranslation();
 
   return (
     <List sx={{ width: "100%", maxWidth: 450 }}>
@@ -90,8 +93,10 @@ export default function ItemList({
             </Badge>
           </ListItemAvatar>
           <ListItemText
-            primary={item.name}
-            secondary={`Value: ${item.value}, Weight: ${item.weight}`}
+            primary={t(`items.${item.name}`)}
+            secondary={`${t("labels.value")}: ${item.value}, ${t(
+              "labels.weight"
+            )}: ${item.weight}`}
             sx={{ flex: 1 }}
           />
           <ButtonGroup>
