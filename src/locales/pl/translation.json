@@ -1,0 +1,24 @@
+{
+  "title": "Spakuj swoją kosmetyczkę",
+  "capacity": "Pojemność",
+  "packButton": "Spakuj",
+  "tryAgainButton": "Spróbuj ponownie",
+  "packedItemsHeader": "Spakowane przedmioty",
+  "noItemsPacked": "Brak spakowanych przedmiotów.",
+  "maxValue": "Maksymalna wartość",
+
+  "labels": {
+    "value": "Wartość",
+    "weight": "Waga"
+  },
+  "items": {
+    "Mascara": "Tusz do rzęs",
+    "Powder": "Puder",
+    "Eye-shadow": "Cienie do powiek",
+    "Lipstick": "Szminka",
+    "Concealer": "Korektor",
+    "Blush": "Róż",
+    "Foundation": "Podkład",
+    "Eyebrow gel": "Żel do brwi"
+  }
+}

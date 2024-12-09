@@ -1,0 +1,24 @@
+{
+  "title": "Pack your Cosmetic Bag",
+  "capacity": "Capacity",
+  "packButton": "Pack",
+  "tryAgainButton": "Try Again",
+  "packedItemsHeader": "Packed Items",
+  "noItemsPacked": "No items packed yet.",
+  "maxValue": "Maximum Value",
+
+  "labels": {
+    "value": "Value",
+    "weight": "Weight"
+  },
+  "items": {
+    "Mascara": "Mascara",
+    "Powder": "Powder",
+    "Eye-shadow": "Eye-shadow",
+    "Lipstick": "Lipstick",
+    "Concealer": "Concealer",
+    "Blush": "Blush",
+    "Foundation": "Foundation",
+    "Eyebrow gel": "Eyebrow gel"
+  }
+}
