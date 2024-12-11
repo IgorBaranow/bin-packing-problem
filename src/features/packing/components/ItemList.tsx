@@ -81,7 +81,7 @@ export default function ItemList({
               }}
             >
               <Avatar
-                src={images[item.name]}
+                src={images[item.name as keyof typeof images]}
                 alt={item.name}
                 sx={{
                   width: 80,

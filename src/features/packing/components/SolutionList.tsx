@@ -12,7 +12,7 @@ interface SolutionListProps {
 }
 
 export default function SolutionList({ selectedItems }: SolutionListProps) {
-  const images = {
+  const images: Record<string, string> = {
     Mascara: "/mascara.png",
     Powder: "/powder.png",
     "Eye-shadow": "/eye-shadows.png",
