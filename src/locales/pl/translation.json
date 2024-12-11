@@ -6,6 +6,15 @@
   "packedItemsHeader": "Spakowane przedmioty",
   "noItemsPacked": "Brak spakowanych przedmiotów.",
   "maxValue": "Maksymalna wartość",
+  "packingPageTitle": "Pakowanie",
+  "benchmarkTitle": "Testowanie Algorytmu Plecakowego",
+  "executionTimeLabel": "Czas Wykonania (ms)",
+  "runBenchmarkButton": "Uruchom Test",
+  "downloadResultsButton": "Pobierz Wyniki",
+  "running": "W trakcie...",
+  "capacityAxis": "Pojemność",
+  "executionTimeAxis": "Czas Wykonania (ms)",
+  "noBenchmarkData": "Kliknij 'Uruchom Test', aby zobaczyć wyniki.",
 
   "labels": {
     "value": "Wartość",

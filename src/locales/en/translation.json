@@ -6,6 +6,15 @@
   "packedItemsHeader": "Packed Items",
   "noItemsPacked": "No items packed yet.",
   "maxValue": "Maximum Value",
+  "packingPageTitle": "Packing",
+  "benchmarkTitle": "Benchmark Knapsack Algorithm",
+  "executionTimeLabel": "Execution Time (ms)",
+  "runBenchmarkButton": "Run Benchmark",
+  "running": "Running...",
+  "downloadResultsButton": "Download Results",
+  "capacityAxis": "Capacity",
+  "executionTimeAxis": "Execution Time (ms)",
+  "noBenchmarkData": "Click 'Run Benchmark' to see results.",
 
   "labels": {
     "value": "Value",

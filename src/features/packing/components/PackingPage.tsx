@@ -5,6 +5,8 @@ import { Box, Button, Grid2, Typography } from "@mui/material";
 import SolutionList from "./SolutionList";
 import { solveKnapsack } from "../utils/solveKnapsack";
 import { useTranslation } from "react-i18next";
+import AppNavbar from "./AppNavbar";
+import ToggleLanguage from "./toggleLanguage";
 
 export default function PackingPage() {
   const { t, i18n } = useTranslation();
@@ -38,7 +40,7 @@ export default function PackingPage() {
     const solution = solveKnapsack(items, capacity, selectedItemsCount);
 
     const selectedItemsMap = solution.selectedItems.reduce(
-      (acc, item) => ({
+      (acc: { [key: string]: number }, item) => ({
         ...acc,
         [item.name]: (acc[item.name] || 0) + 1,
       }),
@@ -58,131 +60,116 @@ export default function PackingPage() {
     setResult(null);
   };
 
-  // Toggle language between English and Polish
-  const toggleLanguage = () => {
-    const newLang = i18n.language === "en" ? "pl" : "en";
-    i18n.changeLanguage(newLang);
-  };
-
   return (
     <>
-      <Box
-        sx={{
-          position: "absolute",
-          top: 20,
-          right: 20,
-        }}
-      >
-        <Button variant="outlined" onClick={toggleLanguage}>
-          {i18n.language === "en" ? "Polski" : "English"}
-        </Button>
-      </Box>
-
-      <Grid2 container spacing={2}>
-        <Grid2
-          size={4}
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            textAlign: "center",
-          }}
-        >
-          <ItemList
-            items={items}
-            itemCounts={itemCounts}
-            onAddItem={handleAddItem}
-            onRemoveItem={handleRemoveItem}
-          />
-        </Grid2>
-        <Grid2
-          size={4}
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            textAlign: "center",
-          }}
-        >
-          <Typography component="h1" variant="h1">
-            {t("title")}
-          </Typography>
-          <Box
-            component="img"
-            src="/cosmetic-bag.png"
-            alt="Descriptive text for your image"
+      <AppNavbar pageTitle="Benchmark" pageLink="/benchmark" />
+      <Box marginTop={"100px"}>
+        <Grid2 container spacing={2}>
+          <Grid2
+            size={4}
             sx={{
-              width: "400px",
-              height: "auto",
-              marginTop: "5rem",
-            }}
-          />
-          <Typography variant="body1" color="text.secondary">
-            {t("capacity")}: {capacity}
-          </Typography>
-          <Button
-            onClick={handleSolve}
-            variant="contained"
-            color="primary"
-            sx={{
-              marginTop: 10,
-              width: "250px",
-              height: "60px",
-              fontSize: "1rem",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              textAlign: "center",
             }}
           >
-            {t("packButton")}
-          </Button>
-          {result && (
-            <Button
-              onClick={handleReset}
-              variant="outlined"
-              color="secondary"
+            <ItemList
+              items={items}
+              itemCounts={itemCounts}
+              onAddItem={handleAddItem}
+              onRemoveItem={handleRemoveItem}
+            />
+          </Grid2>
+          <Grid2
+            size={4}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              textAlign: "center",
+            }}
+          >
+            <Typography component="h1" variant="h1">
+              {t("title")}
+            </Typography>
+            <Box
+              component="img"
+              src="/cosmetic-bag.png"
+              alt="Descriptive text for your image"
               sx={{
-                marginTop: 2,
-                fontSize: "0.8rem",
+                width: "400px",
+                height: "auto",
+                marginTop: "5rem",
+              }}
+            />
+            <Typography variant="body1" color="text.secondary">
+              {t("capacity")}: {capacity}
+            </Typography>
+            <Button
+              onClick={handleSolve}
+              variant="contained"
+              color="primary"
+              sx={{
+                marginTop: 10,
+                width: "250px",
+                height: "60px",
+                fontSize: "1rem",
               }}
             >
-              {t("tryAgainButton")}
+              {t("packButton")}
             </Button>
-          )}
-        </Grid2>
-        <Grid2
-          size={4}
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            textAlign: "center",
-          }}
-        >
-          <Box
+            {result && (
+              <Button
+                onClick={handleReset}
+                variant="outlined"
+                color="secondary"
+                sx={{
+                  marginTop: 2,
+                  fontSize: "0.8rem",
+                }}
+              >
+                {t("tryAgainButton")}
+              </Button>
+            )}
+          </Grid2>
+          <Grid2
+            size={4}
             sx={{
-              margin: "2rem 0",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              textAlign: "center",
             }}
           >
-            <Typography variant="h4">{t("packedItemsHeader")}</Typography>
-          </Box>
-          {result ? (
-            <SolutionList selectedItems={result.selectedItems} />
-          ) : (
-            <Typography variant="body2" color="text.secondary">
-              {t("noItemsPacked")}
-            </Typography>
-          )}
-          <Box>
-            {result && (
-              <div>
-                <Typography variant="h4" color="primary">
-                  {t("maxValue")}: {result.maxValue}
-                </Typography>
-              </div>
+            <Box
+              sx={{
+                margin: "2rem 0",
+              }}
+            >
+              <Typography variant="h4">{t("packedItemsHeader")}</Typography>
+            </Box>
+            {result ? (
+              <SolutionList selectedItems={result.selectedItems} />
+            ) : (
+              <Typography variant="body2" color="text.secondary">
+                {t("noItemsPacked")}
+              </Typography>
             )}
-          </Box>
+            <Box>
+              {result && (
+                <div>
+                  <Typography variant="h4" color="primary">
+                    {t("maxValue")}: {result.maxValue}
+                  </Typography>
+                </div>
+              )}
+            </Box>
+          </Grid2>
         </Grid2>
-      </Grid2>
+      </Box>
     </>
   );
 }
