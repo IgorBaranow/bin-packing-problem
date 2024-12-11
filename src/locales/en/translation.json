@@ -11,6 +11,7 @@
   "executionTimeLabel": "Execution Time (ms)",
   "runBenchmarkButton": "Run Benchmark",
   "running": "Running...",
+  "downloadResultsButton": "Download Results",
   "capacityAxis": "Capacity",
   "executionTimeAxis": "Execution Time (ms)",
   "noBenchmarkData": "Click 'Run Benchmark' to see results.",
